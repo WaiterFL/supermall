@@ -1,7 +1,8 @@
 <template>
-  <div id="pnm_swiper">
+  <div id="pnm_swiper" >
     <div
-      class="swiper"
+        class="swiper"
+      ref="swiper"
       @touchstart="touchStart"
       @touchmove="touchMove"
       @touchend="touchEnd"
@@ -20,6 +21,7 @@
   </div>
 </template>
 <script>
+
 export default {
   data() {
     return {
@@ -29,7 +31,8 @@ export default {
       moveTimer: null,
       startPos: 0,
       distance: 0,
-      slideCount: 0
+      slideCount: 0,
+      slides:[]
     };
   },
   props: {
@@ -40,10 +43,14 @@ export default {
     animDuration: {
       type: Number,
       default: 300
-    }
+    },
   },
-  mounted() {},
+  mounted: function() {
+    this.slideOn();
+
+  },
   methods: {
+
     // 0. 启动函数
     slideOn() {
       this.initDom();
@@ -53,17 +60,21 @@ export default {
     },
     // 1. 初始化DOM，并获取必要的数据
     initDom() {
-      let swiperEl = document.querySelector(".swiper");
-      let slides = swiperEl.querySelectorAll(".slide");
-      this.swiperStyle = swiperEl.style;
-      this.slideCount = slides.length;
-      this.slideWidth = swiperEl.offsetWidth;
+      let swiperEl = this.$refs.swiper
+      // let swiperEl = document.querySelector(".swiper");
 
+     this.slides = swiperEl.querySelectorAll(".slide");
+     //  this.slides= slide
+
+      this.swiperStyle = swiperEl.style;
+      this.slideCount =  this.slides.length;
+      this.slideWidth = swiperEl.offsetWidth;
+      // console.log(swiperEl.offsetWidth);
       if (this.slideCount > 1) {
-        let firstSlide = slides[0].cloneNode(true);
-        let lastSlide = slides[this.slideCount - 1].cloneNode(true);
+        let firstSlide =this.slides[0].cloneNode(true);
+        let lastSlide = this.slides[this.slideCount - 1].cloneNode(true);
         swiperEl.appendChild(firstSlide);
-        swiperEl.insertBefore(lastSlide, slides[0]);
+        swiperEl.insertBefore(lastSlide, this.slides[0]);
         //设置开头位置
         this.setTransform(-this.slideWidth);
       }
