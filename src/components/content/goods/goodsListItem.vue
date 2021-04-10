@@ -1,6 +1,6 @@
 <template>
-  <div class="goodsListItem">
-    <a :href="goodsItem.link">
+  <div class="goodsListItem" @click="goodsItemClick">
+    <a >
       <img :src="goodsItem.show.img"  >
       <div class="goods_info" >
         <P>{{goodsItem.title}}</P>
@@ -22,11 +22,15 @@ name: "goodsListItem",
      }
    }
   },
-  // methods:{
-  //   imageLoad(){
-  //     this.$bus.$emit('itemImageLoad')
-  //   }
-  // }
+  methods:{
+    // imageLoad(){
+    //   // this.$bus.$emit('itemImageLoad')
+    //   console.log(this.goodsItem);
+    // }
+    goodsItemClick(){
+      this.$router.push('/detail/'+this.goodsItem.iid)
+    }
+  }
 }
 </script>
 

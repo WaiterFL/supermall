@@ -30,6 +30,7 @@ import goodsList from "@/components/content/goods/goodsList";
 import scroll from "@/components/common/scroll/scroll";
 import backTop from "@/components/content/backTop/backTop";
 
+
 import {getHomeMultidata,getHomeGoods} from "@/network/home";
 
  export default {
@@ -42,7 +43,8 @@ name: "home",
     tabControl,
     goodsList,
     scroll,
-    backTop
+    backTop,
+
   },
   data(){
   return{
@@ -131,7 +133,7 @@ name: "home",
          // console.log(res);
          this.banner= res.data.data.banner.list;
          this.recommends= res.data.data.recommend.list;
-         console.log(this.banner);
+         // console.log(this.banner);
        })
      },
       //获取首页数据

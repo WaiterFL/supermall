@@ -14,8 +14,8 @@
         class="bullet_item"
         v-show="slideCount > 1"
         v-for="(item, index) in slideCount"
-        :class="setBulletActive(index)"
         :key="index"
+        :class="setBulletActive(index)"
       ></div>
     </div>
   </div>
@@ -62,9 +62,11 @@ export default {
     initDom() {
       let swiperEl = this.$refs.swiper
       // let swiperEl = document.querySelector(".swiper");
-
-     this.slides = swiperEl.querySelectorAll(".slide");
-     //  this.slides= slide
+      let slide = swiperEl.querySelectorAll(".slide");
+      // console.log(slide);
+      if (slide.length>0){
+           this.slides = slide
+        }
 
       this.swiperStyle = swiperEl.style;
       this.slideCount =  this.slides.length;
