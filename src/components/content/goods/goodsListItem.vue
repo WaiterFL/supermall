@@ -1,10 +1,10 @@
 <template>
   <div class="goodsListItem" @click="goodsItemClick">
     <a >
-      <img :src="goodsItem.show.img"  >
+      <img :src="showImage"  >
       <div class="goods_info" >
         <P>{{goodsItem.title}}</P>
-        <span class="price">{{goodsItem.orgPrice}}</span>
+        <span class="price">{{showPrice}}</span>
         <span class="cfav">{{goodsItem.cfav}}</span>
       </div>
     </a>
@@ -21,6 +21,14 @@ name: "goodsListItem",
        return {}
      }
    }
+  },
+  computed:{
+    showImage(){
+      return this.goodsItem.image || this.goodsItem.show.img
+    },
+    showPrice(){
+      return this.goodsItem.price || this.goodsItem.orgPrice
+    }
   },
   methods:{
     // imageLoad(){

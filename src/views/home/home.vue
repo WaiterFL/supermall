@@ -3,7 +3,7 @@
     <Navbar class="center"><div  slot="center">购物街</div></Navbar>
     <tab-control class="tabcontrol" :title="['流行','最新','潮流']"
                  @itemClick="itemClick"
-                 ref="tabControl"
+                 ref="TopControl"
                  v-show="isTabFixed"></tab-control>
     <scroll class="content" ref="scroll"
             :probe-type="3" @scroll="contentScroll"
@@ -58,6 +58,7 @@ name: "home",
     currentType:'pop',
     isShowBackTop: false,
     offsetTop: 0,
+    saveY:0,
     isTabFixed :false
   }
   },
@@ -66,7 +67,13 @@ name: "home",
        return this.goods[this.currentType].list
      }
    },
-  created() {
+  //  activated() {
+  //    console.log('gggg');
+  //  },
+  // deactivated() {
+  //   console.log('iuigui');
+  // },
+   created() {
   //请求多个数据
     this.getHomeMultidata()
 
@@ -119,6 +126,9 @@ name: "home",
          case 2: this.currentType= 'sell'
            break
        }
+       this.$refs.TopControl.currentIndex = index
+       this.$refs.tabControl.currentIndex = index
+
      },
 
      // contentScroll(positon){

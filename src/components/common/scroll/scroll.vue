@@ -28,6 +28,11 @@ name: "scroll",
       default:false
     }
   },
+  computed:{
+    scrollY(){
+      return this.scroll.y
+    }
+  },
   mounted() {
     //$refs确保获取的是当前的wrapper
     this.scroll = new BScroll(this.$refs.wrapper, {

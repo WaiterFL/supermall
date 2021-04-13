@@ -53,7 +53,9 @@ export default {
   padding: 0.42rem;
 }
 .title {
-  font-size: 0.768rem;
+  font-size: 0.9rem;
+  font-family: "Adobe 黑体 Std R";
+  text-indent: 25px;
 }
 
 .info {

@@ -29,6 +29,7 @@ name: "detailNavBar",
   methods:{
     titleClick(index){
       this.currentIndex = index
+      this.$emit('detialTitleClick',index)
     },
     back(){
        this.$router.back()
