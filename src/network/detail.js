@@ -23,10 +23,9 @@ export class Goods {
     this.price = itemInfo.price;
     this.discountBgColor = itemInfo.discountBgColor;
     this.discountDesc = itemInfo.discountDesc;
-
     this.columns = columns;
-
     this.services = services;
+    this.realPrice = itemInfo.lowNowPrice
   }
 }
 export class Shop {

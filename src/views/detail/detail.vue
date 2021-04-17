@@ -1,7 +1,12 @@
 <template>
   <div id="detail">
-    <detail-nav-bar class="navBar"  @detialTitleClick="titleClick"></detail-nav-bar>
-    <scroll class="scroll" ref="scroll" >
+    <detail-nav-bar class="navBar" ref="DetialNavBar" @detialTitleClick="titleClick"></detail-nav-bar>
+    <scroll class="scroll" ref="scroll" @scroll="contenScroll" :probe-type="3">
+      <ul>
+        <li v-for="item in $store.state.cartList" :key="item ">
+          {{item}}
+        </li>
+      </ul>
       <detail-swiper :topImage="topImage"></detail-swiper>
       <DetailBaseInfo :goods="goods"></DetailBaseInfo>
       <DetailShopInfo :shop="shop"></DetailShopInfo>
@@ -10,6 +15,8 @@
       <detial-comment-info :comment="commentInfo" ref="comment"></detial-comment-info>
       <goods-list :goods="recomment" ref="recomment"></goods-list>
     </scroll>
+    <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
+    <detial-buttom-bar @addToCart="addToCart"></detial-buttom-bar>
   </div>
 </template>
 
@@ -23,13 +30,16 @@ import DetailShopInfo from "@/views/detail/childComps/DetailShopInfo";
 import DetailGoodsInfo from "@/views/detail/childComps/DetailGoodsInfo";
 import DetailParams from "@/views/detail/childComps/DetailParams";
 import DetialCommentInfo from "@/views/detail/childComps/detialCommentInfo";
+import detialButtomBar from "@/views/detail/childComps/detialButtomBar";
 import goodsList from "@/components/content/goods/goodsList";
 import scroll from "@/components/common/scroll/scroll";
-
+import backTop from "@/components/content/backTop/backTop";
+import BackTop from "@/components/content/backTop/backTop";
 
 export default {
   name: "detail",
   components: {
+    BackTop,
    DetailNavBar,
     detailSwiper,
     DetailBaseInfo,
@@ -37,38 +47,10 @@ export default {
     DetailGoodsInfo,
     DetailParams,
     DetialCommentInfo,
+    detialButtomBar,
     goodsList,
-
+    backTop,
     scroll
-  },
-  props:{
-
-  },
-  methods:{
-    titleClick(index){
-      this.$refs.scroll.scrollTo(0,-this.titleTopY[index],100)
-
-    },
-    // contenScroll(position) {
-    //   // this.isShowTop = - position.y > 1000;
-    //   for (let i = 0; i < this.titleTopY.length - 1; ++i) {
-    //     if (
-    //         this.detialIndex != i &&
-    //         -position.y >= this.titleTopY[i] &&
-    //         -position.y < this.titleTopY[i + 1]
-    //     ) {
-    //       //console.log(i);
-    //       this.detialIndex = i;
-    //       this.$refs.navBar.currentIndex = i;
-    //       break;
-    //     }
-    //   }
-    //   let len= this.titleTopY.length -1
-    //   while(- position.y > this.titleTopY[len]){
-    //     this.$refs.navBar.currentIndex = len
-    //   }
-    // },
-
   },
   data(){
     return {
@@ -81,10 +63,52 @@ export default {
       commentInfo:{},
       recomment:[],
       titleTopY:[0],
-      // positionY :0,
-      // detialIndex:0
+      detialIndex:0,
+      isShowBackTop: false
     }
   },
+  methods:{
+    addToCart(){
+      // console.log('-------');
+      //获取展示的商品信息需要
+      const product = {}
+      product.image = this.topImage[0];
+      product.title = this.goodsInfo.title;
+      product.desc = this.goodsInfo.desc;
+      product.price = this.goodsInfo.realPrice;
+      product.iid = this.iid;
+      //将商品添加到购物车里
+      this.$store.commit('addCart',product)
+    },
+    titleClick(index){
+      this.$refs.scroll.scrollTo(0,-this.titleTopY[index],100)
+    },
+    backClick(){
+      this.$refs.scroll.scrollTo(0,0)
+    },
+    //
+    contenScroll(position) {
+      this.isShowBackTop = - position.y > 1000
+      if(- position.y >= this.titleTopY[3]){
+        this.$refs.DetialNavBar.currentIndex = 3;
+      }
+      for (let i = 0; i < this.titleTopY.length - 1; ++i) {
+        if (
+            this.detialIndex != i &&
+            -position.y >= this.titleTopY[i] &&
+            -position.y < this.titleTopY[i + 1]
+        ) {
+          //console.log(i);
+          this.detialIndex = i;
+          this.$refs.DetialNavBar.currentIndex = i;
+          break;
+        }
+      }
+
+    },
+
+  },
+
 
   created() {
     // 保存传入的iid
@@ -113,11 +137,11 @@ export default {
       setTimeout(()=>{
         this.titleTopY = []
         this.titleTopY.push(0)
-        this.titleTopY.push(this.$refs.param.$el.offsetTop - 44)
-        this.titleTopY.push(this.$refs.comment.$el.offsetTop - 44)
-        this.titleTopY.push(this.$refs.recomment.$el.offsetTop - 44)
+        this.titleTopY.push(this.$refs.param.$el.offsetTop -44)
+        this.titleTopY.push(this.$refs.comment.$el.offsetTop -44)
+        this.titleTopY.push(this.$refs.recomment.$el.offsetTop -44)
         // console.log(this.titleTopY);
-          },500
+          },1000
       )
     })
     getRecomment().then(res =>{
@@ -141,6 +165,6 @@ export default {
     background: #f6f6f6;
   }
   .scroll{
-    height: calc(100% - 44px);
+    height: calc(100% - 44px - 49px);
   }
 </style>
