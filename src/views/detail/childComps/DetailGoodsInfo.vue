@@ -1,5 +1,5 @@
 <template>
-  <div id="detail_goods_info" v-if="Object.keys(detailInfo).length != 0">
+  <div id="detail_goods_info" v-if="Object.keys(detailInfo).length !== 0">
     <div class="goods_info_desc">
       <div style="float: left;" class="desc_line">
         <i class="desc_dot"></i>
@@ -12,13 +12,13 @@
       </div>
     </div>
     <div class="goods_info_key">
-      {{ detailInfo.detailImage[0].key }}
+      {{ detailInfo.topImages[0].key }}
     </div>
     <div class="goods_info_imgs">
       <img
         :src="item"
         alt=""
-        v-for="(item, index) in detailInfo.detailImage[0].list" :key="index"
+        v-for="(item, index) in detailInfo.topImages[0].list" :key="index"
         @load="loadImg"
       />
     </div>

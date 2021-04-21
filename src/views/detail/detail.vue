@@ -2,11 +2,6 @@
   <div id="detail">
     <detail-nav-bar class="navBar" ref="DetialNavBar" @detialTitleClick="titleClick"></detail-nav-bar>
     <scroll class="scroll" ref="scroll" @scroll="contenScroll" :probe-type="3">
-      <ul>
-        <li v-for="item in $store.state.cartList" :key="item ">
-          {{item}}
-        </li>
-      </ul>
       <detail-swiper :topImage="topImage"></detail-swiper>
       <DetailBaseInfo :goods="goods"></DetailBaseInfo>
       <DetailShopInfo :shop="shop"></DetailShopInfo>
@@ -75,10 +70,11 @@ export default {
       product.image = this.topImage[0];
       product.title = this.goodsInfo.title;
       product.desc = this.goodsInfo.desc;
-      product.price = this.goodsInfo.realPrice;
+      product.price = this.goodsInfo.highNowPrice;
       product.iid = this.iid;
       //将商品添加到购物车里
-      this.$store.commit('addCart',product)
+      // console.log(this.goodsInfo.title);
+      this.$store.dispatch('addCart',product)
     },
     titleClick(index){
       this.$refs.scroll.scrollTo(0,-this.titleTopY[index],100)
@@ -126,7 +122,9 @@ export default {
       //创建店铺信息的对象
       this.shop = new Shop(data.shopInfo)
       //获取商品详情信息
-      this.goodsInfo = data.detailInfo
+      // this.goodsInfo = data.detailInfo
+      this.goodsInfo = res.data.result.itemInfo
+      console.log(this.goodsInfo);
       //获取参数信息
       this.detailParam = new GoodsParam(data.itemParams.info,data.itemParams.rule)
       //获取评论信息(一条）
@@ -145,7 +143,7 @@ export default {
       )
     })
     getRecomment().then(res =>{
-      console.log(res);
+      // console.log(res);
       this.recomment = res.data.data.list
     })
   }
