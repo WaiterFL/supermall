@@ -13,6 +13,7 @@
     <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
     <detial-buttom-bar @addToCart="addToCart"></detial-buttom-bar>
   </div>
+
 </template>
 
 <script>
@@ -30,7 +31,7 @@ import goodsList from "@/components/content/goods/goodsList";
 import scroll from "@/components/common/scroll/scroll";
 import backTop from "@/components/content/backTop/backTop";
 import BackTop from "@/components/content/backTop/backTop";
-
+// import toast from "@/components/common/toast/toast";
 export default {
   name: "detail",
   components: {
@@ -45,7 +46,8 @@ export default {
     detialButtomBar,
     goodsList,
     backTop,
-    scroll
+    scroll,
+
   },
   data(){
     return {
@@ -74,7 +76,12 @@ export default {
       product.iid = this.iid;
       //将商品添加到购物车里
       // console.log(this.goodsInfo.title);
-      this.$store.dispatch('addCart',product)
+      this.$store.dispatch('addCart',product).then(res => {
+        // console.log(res)
+
+       this.$toast.show(res,2000)
+      })
+
     },
     titleClick(index){
       this.$refs.scroll.scrollTo(0,-this.titleTopY[index],100)
